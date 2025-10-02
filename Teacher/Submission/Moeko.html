@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moeko's Portal</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+        /* Basic Reset */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+            body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            font-family: 'Times New Roman', sans-serif;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('https://satomiproject.github.io/class/images/JapaneseClassroom.png');
+            background-color: #f0f0f0;
+            background-attachment: fixed;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        /* Top Bar Styling */
+        .top-bar {
+            width: 100%;
+            height: 80px;
+            background-color: #245715;
+            font-family: Times New Roman, sans-serif;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        .top-bar h1 {
+            font-size: 24px;
+            font-family: Times New Roman, sans-serif;
+            margin: 0;
+        }
+        .top-bar .user-info {
+            display: flex;
+            font-family: Times New Roman, sans-serif;
+            align-items: center;
+        }
+        .top-bar .user-info span {
+            margin-right: 20px;
+            font-family: Times New Roman, sans-serif;
+            font-size: 18px;
+        }
+        .top-bar .logout-btn {
+            padding: 5px 10px;
+            background-color: #08291a;
+            font-family: Times New Roman, sans-serif;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        /* Sidebar Styling */
+        .sidebar {
+            width: 180px;
+            border-radius: 2%;
+            background-color: #245715;  
+            margin-top: 100px;
+            margin-left: 10px;
+            margin-bottom: 1000px;
+            font-family: Times New Roman, sans-serif;
+            height: 100%;
+            color: white;
+            position: fixed;
+            height: 81vh;
+            left: 0;
+        }
+        .sidebar-button, .sub-button {
+            display: block;
+            color: white;
+            text-decoration: none;
+            font-family: Times New Roman, sans-serif;
+            padding: 10px 20px;
+            background: none;
+            width: 100%;
+            cursor: pointer;
+            border: none;
+            text-align: left;
+            font-size: 15px; /* Ensure font size consistency */
+        }
+        .sidebar-button.has-sub {
+          position: relative; /* Ensure the dropdown arrow aligns properly */
+        }
+        .sidebar-button:hover, .sub-button:hover {
+            background-color: #36ca2938;
+            border-radius: 2%;
+            margin-left: 0px;
+        }
+        .sub-buttons {
+            display: none;
+            padding-left: 20px;
+        }
+        .sidebar-button.has-sub::after {
+            content: "▸"; /* Right arrow */
+            position: absolute;
+            right: 20px;
+            transform: rotate(0deg);
+            transition: transform 0.3s;
+        }
+        .sidebar-button.has-sub.open::after {
+            transform: rotate(90deg); /* Down arrow */
+        }
+        .sub-buttons.open {
+            display: block;
+        }
+        /* Content Button Styling */
+        .content-button {
+            display: inline-block;
+            font-family: Times New Roman, sans-serif;
+            background-color: #245715;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            margin-left:60px;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .content-button:hover {
+            background-color: #575757;
+        }
+        /* Body Styling */
+        body {
+            font-family: Times New Roman, sans-serif;
+            margin: 0;
+            padding-left: 160px; /* Adjust for sidebar width */
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            font-family: Times New Roman, sans-serif;
+            align-items: center;
+            margin-bottom: 80px;
+        }
+        #logo {
+            height: 80px;
+        }
+        h2 {
+            margin-left: 60px;
+            font-family: Times New Roman, sans-serif;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        table {
+            width: 90%;
+            border: 1px solid #ddd;
+            max-width: 1200px;
+            margin: 0 auto;
+            border-collapse: collapse;
+            margin-bottom: 50px;
+            table-layout: fixed;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+            font-family: Times New Roman, sans-serif;
+            width: 20%;
+            height: 50px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            text-align: center;
+            vertical-align: middle
+        }
+        th:first-child, td:first-child {
+          border: 1px solid #ddd;
+          padding: 5px;
+          text-align: center;
+          width: 8%;
+          height: 50px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          text-align: center;
+          vertical-align: middle
+        }
+        th {
+            background-color: #245715;
+            font-family: Times New Roman, sans-serif;
+            color: white;
+        }
+        td[contenteditable] {
+            background-color: rgba(254, 255, 249, 0.096);
+            font-family: Times New Roman, sans-serif;
+        }
+        section:last-of-type {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        #monthly-table td a {
+            text-decoration: none;
+            color: #245715;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <img src="https://satomiproject.github.io/class/images/Picture3.png" style="width:34%; display:block;">
+          <div class="user-info">
+          <span>ようこそ, ニングもえこ 先生</span>
+          <a href="https://satomiproject.github.io/class/index.html" class="logout-btn">ログアウト</a>
+      </div>
+  </div>
+  <!-- Side Bar -->
+  <div class="sidebar">
+    <a href="https://satomiproject.github.io/class/Teacher/Home/Moeko.html" class="sidebar-button">ホーム</a>
+    <a href="https://satomiproject.github.io/class/Teacher/Annoucement/Moeko.html" class="sidebar-button">教師からのお知らせ</a>
+    <a href="https://satomiproject.github.io/class/Teacher/LessonProgram/Moeko.html" class="sidebar-button">レッスンプログラム</a>
+    <a href="https://satomiproject.github.io/class/Teacher/LessonProgram/Moekoupload.html" class="sidebar-button">アップロード</a>
+    <a href="https://satomiproject.github.io/class/Teacher/Submission/Moeko.html" class="sidebar-button">提出する</a>
+    <a href="https://satomiproject.github.io/class/Teacher/Inventory/Moeko.html" class="sidebar-button">学生の情報</a>
+    <button class="sidebar-button has-sub" onclick="toggleSubMenu(this)">学生の出席状況</button>
+    <div class="sub-buttons">
+        <a href="https://satomiproject.github.io/class/Teacher/Attendance/Moeko.html" class="sub-button">CLASS A</a>
+    </div>
+    <button class="sidebar-button has-sub" onclick="toggleSubMenu(this)">学生の成績</button>
+    <div class="sub-buttons">
+        <a href="https://satomiproject.github.io/class/Teacher/Grades/Moeko.html" class="sub-button">CLASS A</a>
+    </div>
+    <a href="https://satomiproject.github.io/class/Teacher/JLPT/Moeko.html" class="sidebar-button">JLPT</a>
+</div>
+<br><br><br><br><br><br><br><br><br><br><br>
+  <h2>週間タイムテーブル</h2>
+  <table id="submissionTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Type</th>
+        <th>PDF View</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <script>
+    function loadSubmissions() {
+      const submissions = JSON.parse(localStorage.getItem("submissions") || "[]");
+      const table = document.getElementById("submissionTable").getElementsByTagName("tbody")[0];
+      table.innerHTML = ""; // Clear previous
+      submissions.forEach((sub, index) => {
+        const row = table.insertRow();
+        const fileUrl = `uploads/${sub.file}`; // simulate
+        row.innerHTML = `
+          <td>${sub.id}</td>
+          <td>${sub.name}</td>
+          <td>${sub.type}</td>
+          <td><a href="${fileUrl}" target="_blank">View PDF</a></td>
+          <td><button onclick="deleteSubmission(${index})">Delete</button></td>
+        `;
+      });
+    }
+    function deleteSubmission(index) {
+      let submissions = JSON.parse(localStorage.getItem("submissions") || "[]");
+      submissions.splice(index, 1);
+      localStorage.setItem("submissions", JSON.stringify(submissions));
+      loadSubmissions();
+    }
+    // Load on page load
+    window.onload = loadSubmissions;
+  </script>
+</body>
+</html>

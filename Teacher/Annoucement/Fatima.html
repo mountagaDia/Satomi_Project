@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fatima's Portal</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+        /* Basic Reset */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            font-family: 'Times New Roman', serif;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('https://satomiproject.github.io/class/images/JapaneseClassroom.png');
+            background-color: #f0f0f0;
+            background-attachment: fixed;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        /* Top Bar Styling */
+        .top-bar {
+            width: 100%;
+            top: 0;
+            left: 0;
+            height: 80px;
+            font-family: Times New Roman, sans-serif;
+            background-color: #245715;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            position: fixed;
+            z-index: 100;
+        }
+
+        .top-bar h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .top-bar .user-info {
+            display: flex;
+            align-items: center;                          
+        }
+
+        .top-bar .user-info span {
+            margin-right: 20px;
+            font-size: 18px;
+        }
+
+        .top-bar .logout-btn {
+            padding: 5px 10px;
+            background-color: #08291a;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 180px;
+            border-radius: 2%;
+            background-color: #245715;  
+            margin-top: 100px;
+            margin-left: 10px;
+            margin-bottom: 1000px;
+            height: 100%;
+            color: white;
+            position: fixed;
+            height: 81vh;
+            left: 0;
+        }
+
+        .sidebar-button, .sub-button {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            background: none;
+            width: 100%;
+            cursor: pointer;
+            border: none;
+            text-align: left;
+            font-size: 15px; /* Ensure font size consistency */
+        }
+        .sidebar-button.has-sub {
+            position: relative; /* Ensure the dropdown arrow aligns properly */
+        }
+
+        .sidebar-button:hover, .sub-button:hover {
+            background-color: #36ca2938;
+            border-radius: 2%;
+            margin-left: 0px;
+        }
+
+        .sub-buttons {
+            display: none;
+            padding-left: 20px;
+        }
+
+        .sidebar-button.has-sub::after {
+            content: "▸"; /* Right arrow */
+            position: absolute;
+            right: 20px;
+            transform: rotate(0deg);
+            transition: transform 0.3s;
+        }
+
+        .sidebar-button.has-sub.open::after {
+            transform: rotate(90deg); /* Down arrow */
+        }
+
+        .sub-buttons.open {
+            display: block;
+        }
+
+        /* Content Button Styling */
+        .content-button {
+            display: inline-block;
+            background-color: #245715;
+            font-family: Times New Roman, serif;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            margin-left:60px;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .content-button:hover {
+            background-color: #36ca2938;
+            border-radius: 2%;
+            margin-left: 0px;
+        }
+
+/* Body Styling */
+body {
+    font-family: Times New Roman, serif;
+    margin-left: 20px;
+    padding-left: 180px; /* Adjust for sidebar width */
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 80px;
+}
+
+#logo {
+    height: 80px;
+}
+
+h2 {
+    margin-left: 0px;
+    margin-bottom: 20px;
+    font-family: Times New Roman, serif;
+    text-align: left;
+}
+textarea {
+    width: 100%;
+    height: 80px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 16px;
+    resize: none;
+}
+button {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 15px;
+    font-size: 16px;
+    color: white;
+    background-color: #245715;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.saveButton {
+    display: inline-block;
+    width: 10px;
+    margin-top: 10px;
+    font-family: Times New Roman, serif;
+    font-size: 16px;
+    color: white;
+    background-color: #245715;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #36ca2938;
+    border-radius: 2%;
+    margin-left: 0px;
+}
+.announcements {
+    margin-top: 20px;
+}
+.announcement {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #f9f9f9;
+    position: relative;
+}
+.announcement .date {
+    font-size: 12px;
+    color: #666;
+}
+.delete-button {
+    position: absolute;
+    top:0px;
+    right: 10px;
+    background-color: #245715;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-bottom: 2px;
+}
+.delete-button:hover {
+    background-color: #a71d2a;
+    border-radius: 5px;
+}
+</style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <img src="https://satomiproject.github.io/class/images/Picture3.png" style="width:34%; display:block;">
+          <div class="user-info">
+          <span>ようこそ, Fatima 先生</span>
+          <a href="https://satomiproject.github.io/class/index.html" class="logout-btn">ログアウト</a>
+      </div>
+  </div>
+     
+  <!-- Side Bar -->
+  <div class="sidebar">
+    <a href="https://satomiproject.github.io/class/Teacher/Home/Fatima.html" class="sidebar-button">ホーム</a>
+    <a href="https://satomiproject.github.io/class/Teacher/Annoucement/Fatima.html" class="sidebar-button">教師からのお知らせ</a>
+    <a href="https://satomiproject.github.io/class/Teacher/LessonProgram/Fatima.html" class="sidebar-button">レッスンプログラム</a>
+    <a href="https://satomiproject.github.io/class/Teacher/LessonProgram/Fatimaupload.html" class="sidebar-button">アップロード</a>
+    <a href="https://satomiproject.github.io/class/Teacher/Inventory/Fatima.html" class="sidebar-button">学生の情報</a>
+    <button class="sidebar-button has-sub" onclick="toggleSubMenu(this)">学生の出席状況</button>
+    <div class="sub-buttons">
+      <a href="https://satomiproject.github.io/class/Teacher/Attendance/Fatima.html" class="sub-button">CLASS B</a>
+  </div>
+    <button class="sidebar-button has-sub" onclick="toggleSubMenu(this)">学生の成績</button>
+    <div class="sub-buttons">
+        <a href="https://satomiproject.github.io/class/Teacher/Grades/Fatima.html" class="sub-button">CLASS B</a>
+    </div>
+    <a href="https://satomiproject.github.io/class/Teacher/JLPT/Fatima.html" class="sidebar-button">JLPT</a>
+</div>
+<br><br><br><br><br><br><br><br><br><br><br>
+  <main style="padding: 20px;">
+
+    <h2>教師からのお知らせ</h2>
+    <label for="announcementInput">お知らせ編集</label><br />
+    <textarea id="announcementInput" placeholder="ここにお知らせを書いてください..."></textarea>
+    <button id="saveButton">保存</button>
+    <div id="message"></div>
+    <div id="announcements"></div>
+  </main>
+
+  <script>
+    const saveButton = document.getElementById('saveButton');
+    const announcementInput = document.getElementById('announcementInput');
+    const message = document.getElementById('message');
+    const announcementsDiv = document.getElementById('announcements');
+    function loadAnnouncements() {
+      const announcements = JSON.parse(localStorage.getItem('announcements')) || [];
+      announcementsDiv.innerHTML = '';
+      announcements.forEach(({ text, date }, index) => {
+        const div = document.createElement('div');
+        div.classList.add('announcement');
+        div.innerHTML = `
+          <p>${text}</p>
+          <p class="date">${date}</p>
+          <button class="delete-button" onclick="deleteAnnouncement(${index})">消す</button>
+        `;
+        announcementsDiv.appendChild(div);
+      });
+    }
+    function deleteAnnouncement(index) {
+      let announcements = JSON.parse(localStorage.getItem('announcements')) || [];
+      announcements.splice(index, 1);
+      localStorage.setItem('announcements', JSON.stringify(announcements));
+      loadAnnouncements();
+      message.textContent = 'お知らせが削除されました!';
+      message.style.color = 'green';
+    }
+    saveButton.addEventListener('click', () => {
+      const text = announcementInput.value.trim();
+      if (!text) {
+        message.textContent = 'お知らせを入力してください。';
+        message.style.color = 'red';
+        return;
+    }
+      const date = new Date().toLocaleString();
+      const announcements = JSON.parse(localStorage.getItem('announcements')) || [];
+      announcements.push({ text, date });
+      localStorage.setItem('announcements', JSON.stringify(announcements));
+      loadAnnouncements();
+      message.textContent = 'お知らせが保存されました!';
+      message.style.color = 'green';
+      announcementInput.value = '';
+    });
+    function toggleSubMenu(button) {
+      const submenu = button.nextElementSibling;
+      button.classList.toggle('open');
+      submenu.classList.toggle('open');
+    }
+    // On load
+    loadAnnouncements();
+    document.getElementById("current-date").textContent = new Date().toLocaleDateString();
+  </script>
+</body>
+</html>

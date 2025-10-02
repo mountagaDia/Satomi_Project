@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fatima's Portal</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+        /* Basic Reset */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+            body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            font-family: 'Times New Roman', sans-serif;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('https://satomiproject.github.io/class/images/JapaneseClassroom.png');
+            background-color: #f0f0f0;
+            background-attachment: fixed;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        /* Top Bar Styling */
+        .top-bar {
+            width: 100%;
+            height: 80px;
+            background-color: #245715;
+            font-family: Times New Roman, sans-serif;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        .top-bar h1 {
+            font-size: 24px;
+            font-family: Times New Roman, sans-serif;
+            margin: 0;
+        }
+        .top-bar .user-info {
+            display: flex;
+            align-items: center;
+            font-family: Times New Roman, sans-serif;
+        }
+        .top-bar .user-info span {
+            margin-right: 20px;
+            font-family: Times New Roman, sans-serif;
+            font-size: 18px;
+        }
+        .top-bar .logout-btn {
+            padding: 5px 10px;
+            background-color: #08291a;
+            font-family: Times New Roman, sans-serif;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        /* Sidebar Styling */
+        .sidebar {
+            width: 180px;
+            border-radius: 2%;
+            background-color: #245715;  
+            margin-top: 100px;
+            margin-left: 10px;
+            margin-bottom: 1000px;
+            font-family: Times New Roman, sans-serif;
+            height: 100%;
+            color: white;
+            position: fixed;
+            height: 81vh;
+            left: 0;
+        }
+        .sidebar-button, .sub-button {
+            display: block;
+            font-family: Times New Roman, sans-serif;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            background: none;
+            width: 100%;
+            cursor: pointer;
+            border: none;
+            text-align: left;
+            font-size: 15px; /* Ensure font size consistency */
+        }
+        .sidebar-button.has-sub {
+          position: relative; /* Ensure the dropdown arrow aligns properly */
+        }
+        .sidebar-button:hover, .sub-button:hover {
+            background-color: #36ca2938;
+            border-radius: 2%;
+            margin-left: 0px;
+        }
+        .sub-buttons {
+            display: none;
+            font-family: Times New Roman, sans-serif;
+            padding-left: 20px;
+        }
+        .sidebar-button.has-sub::after {
+            content: "▸"; /* Right arrow */
+            font-family: Times New Roman, sans-serif;
+            position: absolute;
+            right: 20px;
+            transform: rotate(0deg);
+            transition: transform 0.3s;
+        }
+        .sidebar-button.has-sub.open::after {
+            transform: rotate(90deg); /* Down arrow */
+        }
+        .sub-buttons.open {
+            display: block;
+        }
+        /* Content Button Styling */
+        .content-button {
+            display: inline-block;
+            background-color: #245715;
+            font-family: Times New Roman, sans-serif;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            margin-left:60px;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .content-button:hover {
+            background-color: #575757;
+        }
+/* Body Styling */
+body {
+    font-family: Times New Roman, sans-serif;
+    margin: 0;
+    padding-left: 200px; /* Adjust for sidebar width */
+    display: flex;
+    flex-direction: column;
+}
+header {
+    display: flex;
+    font-family: Times New Roman, sans-serif;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 80px;
+}
+#logo {
+    height: 80px;
+}
+h2 {
+    margin-left:0px;
+    font-family: Times New Roman, sans-serif;
+    margin-bottom: 20px;
+    text-align: left;
+}
+.button-group {
+  margin-bottom: 20px;
+  font-family: Times New Roman, sans-serif;
+}
+.button-group button {
+  padding: 10px 20px;
+  font-family: Times New Roman, sans-serif;
+  margin-right: 10px;
+  background-color: #245715;
+  border-radius: 4px;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 1rem;
+}
+.search-section {
+  margin-bottom: 20px;
+  font-family: Times New Roman, sans-serif;
+
+}
+.search-section input {
+  padding: 8px;
+  margin-right: 10px;
+  font-family: Times New Roman, sans-serif;
+  border-radius: 4px;
+  font-size: 1rem;
+  width: 250px;
+}
+.search-section button {
+  padding: 8px 20px;
+  font-family: Times New Roman, sans-serif;
+  font-size: 1rem;
+  border-radius: 4px;
+  color: #ffffff;
+  background-color: #245715;
+}
+table {
+  width: 98%;
+  font-family: Times New Roman, sans-serif;
+  border-collapse: collapse;
+  text-align: center;
+  display: none; /* Hide tables by default */
+}
+
+.result-table {
+  display: none; /* Hidden by default */
+  margin-top: 20px;
+  text-align: left;
+}
+td {
+  border: 1px solid #ddd;
+  background-color: rgba(254, 255, 249, 0.212);
+  text-align: left;
+  padding: 8px;
+}
+th {
+  background-color: #245715;
+  border: 1px solid #ddd;
+  color: white;
+}
+.id {
+  width: 5%; 
+}
+.date, .text1, .text2 {
+  width: 7%;
+}
+.phone, .email {
+  width: 7%;
+}
+.name {
+  width: 22%;
+}
+.preview1, .preview2 {
+  width: 7%;
+  font-size: small;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <img src="https://satomiproject.github.io/class/images/Picture3.png" style="width:34%; display:block;">
+          <div class="user-info">
+          <span>ようこそ, Fatima 先生</span>
+          <a href="https://satomiproject.github.io/class/index.html" class="logout-btn">ログアウト</a>
+      </div>
+  </div>  
+  <!-- Side Bar -->
+  <div class="sidebar">
+    <a href="https://satomiproject.github.io/class/Teacher/Home/Fatima.html" class="sidebar-button">ホーム</a>
+    <a href="https://satomiproject.github.io/class/Teacher/Annoucement/Fatima.html" class="sidebar-button">教師からのお知らせ</a>
+    <a href="https://satomiproject.github.io/class/Teacher/LessonProgram/FatimaLP.html" class="sidebar-button">レッスンプログラム</a>
+    <a href="https://satomiproject.github.io/class/Teacher/Lesson%20Program/Fatimaupload.html" class="sidebar-button">アップロード</a>
+    <a href="https://satomiproject.github.io/class/Teacher/Inventory/Fatima.html" class="sidebar-button">学生の情報</a>
+    <button class="sidebar-button has-sub" onclick="toggleSubMenu(this)">学生の出席状況</button>
+    <div class="sub-buttons">
+      <a href="https://satomiproject.github.io/class/Teacher/Attendance/Fatima.html" class="sub-button">CLASS B</a>
+  </div>
+    <button class="sidebar-button has-sub" onclick="toggleSubMenu(this)">学生の成績</button>
+    <div class="sub-buttons">
+        <a href="https://satomiproject.github.io/class/Teacher/Grades/Fatima.html" class="sub-button">CLASS B</a>
+    </div>
+    <a href="https://satomiproject.github.io/class/Teacher/JLPT/Fatima.html" class="sidebar-button">JLPT</a>
+</div>
+<br><br><br><br><br><br><br><br><br><br><br>
+  <h2>学生の情報</h2>
+  <div class="search-section">
+    <input type="text" id="searchInput"
+        placeholder="Search by 名前">
+    <button onclick="performSearch()">Search</button>
+</div>
+<table class="result-table" id="searchResultTable">
+    <thead>
+        <tr>
+            <th class="id">ID</th>
+            <th class="name">名前</th>
+            <th class="date">誕生日</th>
+            <th class="phone">電話番号</th>
+            <th class="email">電子メール</th>
+            <th class="text1">専門分野</th>
+            <th class="text2">種類</th>
+            <th class="preview1">履歴書</th>
+            <th class="preview2">プレビュー</th>
+        </tr>
+    </thead>
+    <tbody id="searchResultBody">
+        <!-- Search results will be appended here -->
+    </tbody>
+</table>
+<br>
+<div class="button-group">
+    <button onclick="showTable('groupA')">CLASS A</button>
+    <button onclick="showTable('groupB')">CLASS B</button>
+</div>
+<br>
+<table id="groupA">
+    <thead>
+        <tr>
+            <th class="id">ID</th>
+            <th class="name">名前</th>
+            <th class="date">誕生日</th>
+            <th class="phone">電話番号</th>
+            <th class="email">電子メール</th>
+            <th class="text1">専門分野</th>
+            <th class="text2">種類</th>
+            <th class="preview1">履歴書</th>
+            <th class="preview2">プレビュー</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th class="id">sp001</th>
+            <td class="name">Ba Abdoulaye</td>
+            <td class="date">1993/02/26</td>
+            <td class="phone">+221772506709</td>
+            <td class="email">kokobaye93@gmail.com</td>
+            <td class="text1">Aide Soignante</td>
+            <td class="text2">Matin</td>
+            <td class="preview1"><a
+                    href="https://satomiproject.github.io/class/Students/ClassA/Ba Abdoulaye 履歴書.html"
+                    target="_blank">見る</a></td>
+            <td class="preview2"><a
+                    href="https://satomiproject.github.io/class/Students/ClassA/Ba Abdoulaye.html"
+                    target="_blank">見る</a></td>
+        </tr>
+        <tr>
+            <th class="id">sp002</th>
+            <td class="name">Seck Mame Khoudia</td>
+            <td class="date">2000/09/28</td>
+            <td class="phone">+221770826343</td>
+            <td class="email">diemebinetou99@gmail.com</td>
+            <td class="text1">150 Heures</td>
+            <td class="text2">Matin</td>
+            <td class="preview1"><a
+                    href="https://satomiproject.github.io/class/Students/ClassA/Seck Mame Khoudia 履歴書.html"
+                    target="_blank">見る</a></td>
+            <td class="preview2"><a
+                    href="https://satomiproject.github.io/class/Students/ClassA/Seck Mame Khoudia.html"
+                    target="_blank">見る</a></td>
+        </tr>
+        <tr>
+            <th class="id">sp003</th>
+            <td class="name">Sow Mansour</td>
+            <td class="date">2003/10/12</td>
+            <td class="phone">+221776875033</td>
+            <td class="email">isseu-diouf@yahoo.fr</td>
+            <td class="text1">150 Heures</td>
+            <td class="text2">Matin</td>
+            <td class="preview1"><a
+                    href="https://satomiproject.github.io/class/Students/ClassA/Sow Mansour 履歴書.html"
+                    target="_blank">見る</a></td>
+            <td class="preview2"><a
+                    href="https://satomiproject.github.io/class/Students/ClassA/Sow Mansour.html"
+                    target="_blank">見る</a></td>
+        </tr>
+        <tr>
+            <th class="id">sp004</th>
+            <td class="name">Sylla Aissatou Dia</td>
+            <td class="date">2002/06/30</td>
+            <td class="phone">+221769050391</td>
+            <td class="email">malickdiaw_2002@icloud.com</td>
+            <td class="text1">150 Heures</td>
+            <td class="text2">Matin</td>
+            <td class="preview1"><a
+                    href="https://satomiproject.github.io/class/Students/ClassA/Sylla Aissatou Dia 履歴書.html"
+                    target="_blank">見る</a></td>
+            <td class="preview2"><a
+                    href="https://satomiproject.github.io/class/Students/ClassA/Sylla Aissatou Dia.html"
+                    target="_blank">見る</a></td>
+        </tr>
+        <tr>
+            <th class="id">sp005</th>
+            <td class="name">Sylla khalilou</td>
+            <td class="date">2002/06/30</td>
+            <td class="phone">+221778017064</td>
+            <td class="email">diouflibass996@gmail.com</td>
+            <td class="text1">Transformation Alimentaire</td>
+            <td class="text2">Matin</td>
+            <td class="preview1"><a
+                    href="https://satomiproject.github.io/class/Students/ClassA/Sylla khalilou 履歴書.html"
+                    target="_blank">見る</a></td>
+            <td class="preview2"><a
+                    href="https://satomiproject.github.io/class/Students/ClassA/Sylla khalilou.html"
+                    target="_blank">見る</a></td>
+        </tr>
+    </tbody>
+</table>
+<table id="groupB">
+    <thead>
+        <tr>
+            <th class="id">ID</th>
+            <th class="name">名前</th>
+            <th class="date">誕生日</th>
+            <th class="phone">電話番号</th>
+            <th class="email">電子メール</th>
+            <th class="text1">専門分野</th>
+            <th class="text2">種類</th>
+            <th class="preview1">履歴書</th>
+            <th class="preview2">プレビュー</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th class="id">sp006</th>
+            <td class="name">Noyage Ba</td>
+            <td class="date">1992/04/04</td>
+            <td class="phone">+221775523791</td>
+            <td class="email">nogaye.ba@gmail.com</td>
+            <td class="text1">Aide Soignante</td>
+            <td class="text2">Soir</td>
+            <td class="preview1"><a
+                    href=""
+                    target="_blank">見る</a></td>
+            <td class="preview2"><a
+                    href=""
+                    target="_blank">見る</a></td>
+        </tr>
+        <tr>
+            <th class="id">sp007</th>
+            <td class="name">Vieux Lamine Dabo</td>
+            <td class="date">1992/02/12</td>
+            <td class="phone">+221760243592</td>
+            <td class="email">laminedabo729@gmail.com</td>
+            <td class="text1">Transformation Alimentaire</td>
+            <td class="text2">Soir</td>
+            <td class="preview1"><a
+                    href=""
+                    target="_blank">見る</a></td>
+            <td class="preview2"><a
+                    href=""
+                    target="_blank">見る</a></td>
+        </tr>
+        <tr>
+            <th class="id">sp008</th>
+            <td class="name">Papa Boly Diaw</td>
+            <td class="date">1983/07/09</td>
+            <td class="phone">+221760243592</td>
+            <td class="email">esgfgroup@group.com</td>
+            <td class="text1">Aide Soignante</td>
+            <td class="text2">Soir</td>
+            <td class="preview1"><a
+                    href=""
+                    target="_blank">見る</a></td>
+            <td class="preview2"><a
+                    href=""
+                    target="_blank">見る</a></td>
+        </tr>
+        <tr>
+            <th class="id">sp009</th>
+            <td class="name">Samba Aly Diouf</td>
+            <td class="date">1991/06/30</td>
+            <td class="phone">+221771215571</td>
+            <td class="email">sambaly59061@gmail.com</td>
+            <td class="text1">Informartique</td>
+            <td class="text2">Soir</td>
+            <td class="preview1"><a
+                    href=""
+                    target="_blank">見る</a></td>
+            <td class="preview2"><a
+                    href=""
+                    target="_blank">見る</a></td>
+        </tr>
+        <tr>
+            <th class="id">sp010</th>
+            <td class="name">Sergtine Bara Badji</td>
+            <td class="date">1999/01/10</td>
+            <td class="phone">+221771838197</td>
+            <td class="email">badjiserignebara@gmail.com</td>
+            <td class="text1">Aide Soignante</td>
+            <td class="text2">Soir</td>
+            <td class="preview1"><a
+                    href=""
+                    target="_blank">見る</a></td>
+            <td class="preview2"><a
+                    href=""
+                    target="_blank">見る</a></td>
+        </tr>
+        <tr>
+            <th class="id">sp011</th>
+            <td class="name">Pape Bakar Diaw</td>
+            <td class="date">1994/02/19</td>
+            <td class="phone">+221773372665</td>
+            <td class="email">ndawbakar@gmail.com</td>
+            <td class="text1">Transformation Alimentaire</td>
+            <td class="text2">Soir</td>
+            <td class="preview1"><a
+                    href=""
+                    target="_blank">見る</a></td>
+            <td class="preview2"><a
+                    href=""
+                    target="_blank">見る</a></td>
+        </tr>
+        <tr>
+            <th class="id">sp012</th>
+            <td class="name">Ibrahim Dia</td>
+            <td class="date">1993/03/02</td>
+            <td class="phone">+221789057765</td>
+            <td class="email">ibradia1993@hotmail.com</td>
+            <td class="text1">Transformation Alimentaire</td>
+            <td class="text2">Soir</td>
+            <td class="preview1"><a
+                    href=""
+                    target="_blank">見る</a></td>
+            <td class="preview2"><a
+                    href=""
+                    target="_blank">見る</a></td>
+        </tr>
+    </tbody>
+</table>
+<script>
+const allRows = [
+    { group: 'A', id: 1, name: "Abdoulaye Diallo", date: "1993/02/26", phone: "+221772506709", email: "kokobaye93@gmail.com", text1: "Aide Soignante", text2: "Matin", pdf: "http://.pdf", pdf: "http://.pdf" },
+    { group: 'A', id: 2, name: "Binetou Dieme", date: "2000/09/28", phone: "+221770826343", email: "diemebinetou99@gmail.com", text1: "150 Heures", text2: "Matin", pdf: "http://.pdf", pdf: "http://.pdf" },
+    { group: 'A', id: 3, name: "Isseu Teuw Diouf", date: "2003/10/12", phone: "+221776875033", email: "isseu-diouf@yahoo.fr", text1: "150 Heures", text2: "Matin", pdf: "http://.pdf", pdf: "http://.pdf" },
+    { group: 'A', id: 4, name: "Pap Malick Diaw", date: "2002/06/30", phone: "+221769050391", email: "malickdiaw_2002@icloud.com", text1: "150 Heures", text2: "Matin", pdf: "http://.pdf", pdf: "http://.pdf" },
+    { group: 'A', id: 5, name: "Libass Diouf", date: "2002/06/30", phone: "+221778017064", email: "diouflibass996@gmail.com", text1: "Transformation Alimentaire", text2: "Matin", pdf: "http://.pdf", pdf: "http://.pdf" },
+    { group: 'B', id: 6, name: "Noyage Ba", date: "1992/04/04", phone: "+221775523791", email: "nogaye.ba@gmail.com", text1: "Aide Soignante", text2: "Soir", pdf: "http://.pdf", pdf: "http://.pdf" },
+    { group: 'B', id: 7, name: "Vieux Lamine Dabo", date: "1992/02/12", phone: "+221760243592", email: "laminedabo729@gmail.com", text1: "Transformation Alimentaire", text2: "Soir", pdf: "http://.pdf", pdf: "http://.pdf" },
+    { group: 'B', id: 8, name: "Papa Boly Diaw", date: "1983/07/09", phone: "+221760243592", email: "esgfgroup@group.com", text1: "Aide Soignante", text2: "Soir", pdf: "http://.pdf", pdf: "http://.pdf" },
+    { group: 'B', id: 9, name: "Samba Aly Diouf", date: "1991/06/30", phone: "+221771215571", email: "sambaly59061@gmail.com", text1: "Informartique", text2: "Soir", pdf1: "http://.pdf", pdf2: "http://.pdf" },
+    { group: 'B', id: 10, name: "Sergtine Bara Badji", date: "1999/01/10", phone: "+221771838197", email: "badjiserignebara@gmail.com", text1: "Aide Soignante", text2: "Soir", pdf: "http://.pdf", pdf: "http://.pdf" },
+    { group: 'B', id: 11, name: "Pape Bakar Diaw", date: "1994/02/19", phone: "+221773372665", email: "ndawbakar@gmail.com", text1: "Transformation Alimentaire", text2: "Soir", pdf: "http://.pdf", pdf: "http://.pdf" },
+    { group: 'B', id: 12, name: "Ibrahim Dia", date: "1993/03/02", phone: "+221789057765", email: "ibradia1993@hotmail.com", text1: "Transformation Alimentaire", text2: "Soir", pdf: "http://.pdf", pdf: "http://.pdf" }
+];
+
+function showTable(groupId) {
+    // Hide all tables
+    document.querySelectorAll('table').forEach(table => {
+        table.style.display = 'none';
+    });
+
+    // Show the selected table
+    const selectedTable = document.getElementById(groupId);
+    if (selectedTable) {
+        selectedTable.style.display = 'table';
+    }
+}
+        function performSearch() {
+    const searchValue = document.getElementById('searchInput').value.trim().toLowerCase();
+    const searchResultTable = document.getElementById('searchResultTable');
+    const searchResultBody = document.getElementById('searchResultBody');
+
+    // Clear previous search results
+    searchResultBody.innerHTML = '';
+
+    // Find matching rows
+    const results = allRows.filter(row => {
+        return (
+            row.id.toString().includes(searchValue) ||
+            row.name.toLowerCase().includes(searchValue) ||
+            row.phone.toLowerCase().includes(searchValue)
+        );
+    });
+
+    // Display results
+    if (results.length > 0) {
+        searchResultTable.style.display = 'table';
+
+        results.forEach(result => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td class="id">${result.id}</td>
+                <td class="name">${result.name}</td>
+                <td class="date">${result.date}</td>
+                <td class="phone">${result.phone}</td>
+                <td class="email">${result.email}</td>
+                <td class="text1">${result.text1}</td>
+                <td class="text2">${result.text2}</td>
+                <td class="preview1"><a href="${result.pdf1}" target="_blank">見る</a></td>
+                <td class="preview2"><a href="${result.pdf2}" target="_blank">見る</a></td>
+            `;
+            searchResultBody.appendChild(tr);
+        });
+    } else {
+        searchResultTable.style.display = 'none';
+    }
+}
+
+// Show Group A table by default
+showTable('goupeA');
+function toggleSubMenu(button) {
+  const subMenu = button.nextElementSibling;
+  if (subMenu && subMenu.classList.contains('sub-buttons')) {
+      button.classList.toggle('open');
+      subMenu.classList.toggle('open');
+  }
+}
+
+// Show Group A table by default
+showTable('goupeA');
+</script>
+</body>
+</html>
