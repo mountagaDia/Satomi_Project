@@ -51,13 +51,18 @@ const generalUsers = [
     event.preventDefault(); // Prevent form reload
   
     const firstnameInput = document.getElementById("firstname").value;
+    // const firstnameInput = document.getElementById("").value;
+    // const idlastnameInput = document.getElementById("").value;
     const lastnameInput  = document.getElementById("lastname").value;
     const idInput        = document.getElementById("id").value;
     const password       = document.getElementById("password").value.trim();
+    //const password       = document.getElementById("password");value.trim();
   
     // Normalize for comparison
     const fnNorm = normalizeName(firstnameInput);
     const lnNorm = normalizeName(lastnameInput);
+    // const lnNnorm = normalizeName(lastnameInput);
+
     const idNorm = normalizeId(idInput);
   
     // -----------------------
