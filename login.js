@@ -62,7 +62,6 @@ const generalUsers = [
     const fnNorm = normalizeName(firstnameInput);
     const lnNorm = normalizeName(lastnameInput);
     // const lnNnorm = normalizeName(lastnameInput);
-
     const idNorm = normalizeId(idInput);
   
     // -----------------------
