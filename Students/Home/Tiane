@@ -129,14 +129,14 @@
     <!-- Top Bar -->
       <div class="top-bar">
           <h1>ホーム</h1>
-          <a href="https://satomiproject.github.io/class/Students/Materials/Studentmaterial.html">本棚と書類</a>
-          <a href="https://satomiproject.github.io/class/Students/Submission/Submission.html">提出する</a>
+          <a href="https://satomiproject.github.io/class/Students/Materials/Tiane.html">本棚と書類</a>
+          <a href="https://satomiproject.github.io/class/Students/Submission/Tiane.html">提出する</a>
           <a href="https://satomiproject.github.io/class/index.html">ログアウト</a>
       </div>
     <!-- Lower Section -->
     <div class="lower-section">
   <main style="padding: 20px;">
-  <h3 style="text-align:center;">ようこそ, Mariam さん</h3>
+  <h3 style="text-align:center;">ようこそ, Tiane さん</h3>
     <div id="announcements"></div>
   </main>
     </div>
