@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Satomi Project - Learn Japanese and open new doors to the world. ログインまたはアカウント登録してください。">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Times+New+Roman&display=swap">
+    <link rel="icon" href="/Images/favicon.ico" type="image/x-icon">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <title>Satomi Project</title>
+    <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      margin: 0 auto;
+      min-height: 100vh;
+      font-family: 'Times New Roman', sans-serif;
+      background-image: url('./images/studygroup.png');
+      background-color: #f0f0f0;
+      background-attachment: fixed;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+    .centered-heading {
+      text-align: center;
+    }
+    .french-heading {
+      font-family: 'Times New Roman', Times, serif;
+    }
+    .japanese-input {
+      font-family: 'Times New Roman', Times, serif;
+    }
+    footer {
+      background-color: rgba(57, 160, 16, 0.267); /* Transparent green */
+      padding: 30px 0;
+      text-align: center;
+      color: rgb(7, 6, 6);
+      width: 100%;
+      margin-top: 15px;
+      font-size: 14px;
+      padding: 20px;
+      word-wrap: break-word;
+    }
+</style>
+    <style>
+        /* Basic styling for container */
+        .container {
+          width: 450px;
+          margin: 0 auto;
+          padding: 20px;
+          text-align: center;
+          border: 1px solid #ccc;
+          border-radius: 10px;
+          color: rgb(10, 10, 10);
+        }
+        h1{
+          color: rgb(255, 250, 250);
+          position: center;
+        }
+      
+        /* Form styling */
+        form {
+          display: none; /* Hide all forms initially */
+        }
+      
+        /* Display the active form */
+        form.active {
+          display: block;
+        }
+      
+        /* Button styling */
+        .toggle-btn {
+          margin-top: 10px;
+          cursor: pointer;
+          color: #1655a7;
+          border: none;
+          background: none;
+          font-size: 16px;
+          text-decoration: none;
+          font-family: 'Times New Roman', Times, serif;
+        }
+        .login-btn {
+          background-color: #319139f8;
+          color: white;
+          font-family: 'Times New Roman', Times, serif;
+        }
+        .white-text {
+          color: white;
+        }
+        .custom-login-btn {
+          font-family: 'Times New Roman', Times, serif;
+          background-color: #245715;
+          color: white;
+        }
+        /* Added for login/register toggle button */
+        .toggle-btn.custom-login-btn {
+          background-color: #006400;
+          color: white;
+          font-family: 'Times New Roman', Times, serif;
+        }
+        .toggle-btn.custom-register-btn {
+          background-color: #245715;
+          color: white;
+          font-family: 'Times New Roman', Times, serif;
+        }
+        .times-input {
+          font-family: 'Times New Roman', Times, serif;
+        }
+        .forgot-password-link {
+          color: rgb(231, 231, 231);
+        }
+        .white-link {
+          color: white !important;
+        }
+        .email-link {
+          color: white !important;
+        }
+      </style>
+      </head>
+<body>
+      <img src="./images/Picture3.png" style="width:90%; display:block; margin:auto;" alt="centered image">
+      <h1 class="centered-heading">
+        日本語を学んで世界への新たな扉を開く
+      </h1>
+    <h1 class="centered-heading french-heading" lang="fr">Apprendre le Japonais pour une nouvelle ouverture sur le monde</h2>
+      </h1>
+    <div class="container">
+              <!-- Login Form -->
+<!-- Login Form -->
+<form id="loginForm" class="active">
+  <h2>ログイン</h2><br>
+  <input type="text" id="firstname" required placeholder="名"> 
+  <input type="text" id="lastname" required placeholder="姓" class="japanese-input"><br><br>
+  <input type="text" id="id" placeholder="sp..." class="times-input"><br><br>
+  <input type="password" id="password" class="japanese-input" placeholder="パスワード" required><br><br>
+  <button type="submit" class="toggle-btn custom-login-btn">ログイン</button><br><br>
+</form>
+        
+    </div>
+<script>
+    // JavaScript function to toggle between forms
+    function toggleForms() {
+      const loginForm = document.getElementById('loginForm');
+      const registerForm = document.getElementById('registerForm');
+          
+      loginForm.classList.toggle('active');
+      registerForm.classList.toggle('active');
+    }
+</script>
+<script>
+      document.getElementById('loginForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      // Call login logic from login.js or here
+      alert("ログイン処理がここに入ります");
+      });
+
+      document.getElementById('registerForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      // Registration logic here
+      alert("登録処理がここに入ります");
+      });
+</script>
+<footer>
+  <p> Concernant Satomi Project: 
+    <a class="white-link" href="https://satomiproject.jp">Site Web Officiel</a>
+  </p>
+  <p> Pour plus d'information, contactez nous: 
+    <a class="email-link" href="mailto:satomiproject@gmail.com">satomiproject@gmail.com</a>
+  </p>
+<script src="login.js"></script>
+
+</footer>
+</body>
+</html>
