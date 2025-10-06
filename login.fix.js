@@ -5,7 +5,10 @@
 // Mock data for general users (ID required)
 const generalUsers = [
   { id: "SP001", firstname: "Mariame", lastname: "Tiane", password: "p1" },
+  { id: "SP001", firstname: "Mariame", lastname: "Tiane", password: "p1", redirect: "https://satomilanguageschool.github.io/class/Students/Home/Tiane.html" },
   { id: "SP002", firstname: "Sarr", lastname: "Abdoulaye", password: "p2" },
+  { id: "SP002", firstname: "Sarr", lastname: "Abdoulaye", password: "p2", redirect: "https://satomilanguageschool.github.io/class/Students/Home/Abdoulaye.html"  },
+  
 ];
 
 // Teacher accounts (kept for simple client-side prototype)
